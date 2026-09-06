@@ -1,0 +1,742 @@
+/* ==========================================================================
+   REACT INDEPENDENT FORM STYLES
+   Strict 2-Color Architecture:
+   - Primary: Deep Navy Blue (#0B1F3A)
+   - Secondary / Accent: Authentic Gold (#C8A34D) ONLY for WhatsApp Number
+   ========================================================================== */
+
+:root {
+  --navy-primary: #0B1F3A;
+  --navy-dark: #061224;
+  --navy-light: #142E54;
+  --navy-subtle: rgba(11, 31, 58, 0.05);
+  --navy-border: rgba(11, 31, 58, 0.14);
+  --navy-border-hover: rgba(11, 31, 58, 0.35);
+  
+  --gold-accent: #C8A34D;
+  --gold-glow: rgba(200, 163, 77, 0.3);
+
+  --bg-page: #F0F4F8;
+  --bg-card: #FFFFFF;
+  --text-primary: #0B1F3A;
+  --text-muted: #4A5B73;
+  --text-subtle: #71829B;
+
+  --shadow-sm: 0 2px 8px rgba(11, 31, 58, 0.04);
+  --shadow-md: 0 8px 24px rgba(11, 31, 58, 0.08);
+  --shadow-lg: 0 16px 36px rgba(11, 31, 58, 0.12);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Typography */
+h1, h2, h3, .font-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--navy-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Gold phone number styling - exclusively used for WhatsApp digits */
+.gold-phone-number {
+  color: var(--gold-accent) !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 12px var(--gold-glow);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+a.gold-phone-number:hover {
+  opacity: 0.9;
+  text-decoration: underline;
+}
+
+/* Top Branding Bar */
+.top-nav {
+  background-color: var(--navy-primary);
+  color: #FFFFFF;
+  border-bottom: 2px solid var(--navy-dark);
+  padding: 0.85rem 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 4px 16px rgba(11, 31, 58, 0.15);
+}
+
+.top-nav-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.brand-crest {
+  color: #FFFFFF;
+  font-size: 0.9rem;
+}
+
+.brand-divider {
+  opacity: 0.4;
+  font-weight: 300;
+}
+
+.brand-sub {
+  font-weight: 500;
+  opacity: 0.8;
+  font-size: 0.75rem;
+}
+
+.top-whatsapp {
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.top-wa-label {
+  opacity: 0.85;
+  font-size: 0.75rem;
+}
+
+/* Main Layout */
+.form-container {
+  max-width: 720px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex-grow: 1;
+}
+
+/* Google Form Cards */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--navy-border);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.card:focus-within {
+  border-color: var(--navy-primary);
+  box-shadow: var(--shadow-md);
+}
+
+/* Card Top Colored Accent Bar - Signature Google Form Accent in Navy */
+.card-top-bar {
+  height: 8px;
+  background-color: var(--navy-primary);
+  width: 100%;
+}
+
+/* Header Card */
+.header-card-content {
+  padding: 2rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--navy-primary);
+  text-transform: uppercase;
+  background-color: var(--navy-subtle);
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  align-self: flex-start;
+  border: 1px solid var(--navy-border);
+}
+
+.main-title {
+  font-size: 1.85rem;
+  line-height: 1.25;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Trust Pills (All in Navy) */
+.trust-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--navy-border);
+}
+
+.trust-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--navy-primary);
+  background: var(--navy-subtle);
+  border: 1px solid var(--navy-border);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+}
+
+/* Start Button */
+.start-action-container {
+  padding-top: 0.75rem;
+}
+
+.btn-navy {
+  background-color: var(--navy-primary);
+  color: #FFFFFF;
+  border: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  padding: 0.95rem 1.5rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(11, 31, 58, 0.2);
+  text-decoration: none;
+  width: 100%;
+}
+
+.btn-navy:hover {
+  background-color: var(--navy-dark);
+  box-shadow: 0 6px 20px rgba(11, 31, 58, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-navy:active {
+  transform: translateY(0);
+}
+
+.btn-start {
+  font-size: 1.05rem;
+  padding: 1.05rem 1.75rem;
+}
+
+.btn-arrow {
+  font-size: 1.15rem;
+  transition: transform 0.2s ease;
+}
+
+.btn-navy:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+/* Question Cards */
+.questions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: fadeIn 0.35s ease-out;
+}
+
+.question-card {
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.question-label {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--navy-primary);
+  display: block;
+}
+
+.required-star {
+  color: var(--navy-primary);
+  font-weight: 800;
+}
+
+.question-subtext {
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+  margin-top: -0.35rem;
+  line-height: 1.4;
+}
+
+/* Inputs */
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--navy-border);
+  background-color: #FFFFFF;
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--navy-primary);
+  box-shadow: 0 0 0 3px rgba(11, 31, 58, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Phone Input Group */
+.phone-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.country-select {
+  width: 155px;
+  background-color: var(--navy-subtle);
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.phone-input {
+  flex-grow: 1;
+}
+
+.field-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Radio Options List */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--navy-border);
+  cursor: pointer;
+  background-color: #FFFFFF;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.option-item:hover {
+  background-color: var(--navy-subtle);
+  border-color: var(--navy-border-hover);
+}
+
+.option-item input[type="radio"] {
+  accent-color: var(--navy-primary);
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+}
+
+.option-item.selected {
+  border-color: var(--navy-primary);
+  background-color: var(--navy-subtle);
+  font-weight: 700;
+}
+
+.option-text {
+  font-size: 0.88rem;
+  color: var(--navy-primary);
+}
+
+.custom-input-wrapper {
+  margin-top: 0.5rem;
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* Grid Options (Property Type, Plot Size, Budget) */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+}
+
+.grid-card-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--navy-border);
+  cursor: pointer;
+  background-color: #FFFFFF;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.grid-card-option:hover {
+  background-color: var(--navy-subtle);
+  border-color: var(--navy-border-hover);
+}
+
+.grid-card-option input[type="radio"] {
+  accent-color: var(--navy-primary);
+  width: 17px;
+  height: 17px;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.grid-card-option.selected {
+  background-color: var(--navy-primary);
+  border-color: var(--navy-primary);
+  color: #FFFFFF;
+}
+
+.grid-card-option.selected .grid-title {
+  color: #FFFFFF;
+}
+
+.grid-card-option.selected .grid-desc {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.grid-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.grid-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--navy-primary);
+}
+
+.grid-desc {
+  font-size: 0.72rem;
+  color: var(--text-subtle);
+  line-height: 1.35;
+}
+
+/* Custom Dimensions */
+.custom-dimensions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  padding: 0.85rem;
+  background-color: var(--navy-subtle);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--navy-border);
+  animation: fadeIn 0.25s ease-out;
+}
+
+.custom-field-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--navy-primary);
+  margin-bottom: 0.3rem;
+}
+
+/* Timeline Buttons */
+.timeline-button-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.timeline-btn-label {
+  cursor: pointer;
+}
+
+.timeline-btn-label input[type="radio"] {
+  display: none;
+}
+
+.timeline-btn-text {
+  display: block;
+  text-align: center;
+  padding: 0.75rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--navy-primary);
+  background-color: #FFFFFF;
+  border: 1px solid var(--navy-border);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.timeline-btn-label:hover .timeline-btn-text {
+  background-color: var(--navy-subtle);
+}
+
+.timeline-btn-label input[type="radio"]:checked + .timeline-btn-text {
+  background-color: var(--navy-primary);
+  color: #FFFFFF;
+  border-color: var(--navy-primary);
+}
+
+/* Submit Card */
+.submit-action-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.btn-submit {
+  font-size: 1.05rem;
+  padding: 1.1rem 1.5rem;
+  font-weight: 800;
+}
+
+.submit-security-note {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+}
+
+/* Validation Banner */
+.validation-banner {
+  background-color: var(--navy-subtle);
+  border: 2px solid var(--navy-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--navy-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Success View */
+.success-card {
+  padding: 2.5rem 2rem;
+  text-align: center;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.success-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.success-icon-wrap {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background-color: var(--navy-subtle);
+  border: 2px solid var(--navy-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-check-icon {
+  font-size: 2rem;
+  color: var(--navy-primary);
+  font-weight: 900;
+}
+
+.success-title {
+  font-size: 1.75rem;
+}
+
+.success-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.success-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.btn-success-wa {
+  font-size: 1.05rem;
+  padding: 1rem 1.5rem;
+}
+
+.success-secondary-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-outline {
+  flex: 1;
+  background-color: #FFFFFF;
+  color: var(--navy-primary);
+  border: 1px solid var(--navy-border);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  background-color: var(--navy-subtle);
+  border-color: var(--navy-primary);
+}
+
+.query-preview-box {
+  width: 100%;
+  text-align: left;
+  background-color: var(--navy-subtle);
+  border: 1px solid var(--navy-border);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+}
+
+.preview-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--navy-primary);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.05em;
+}
+
+.preview-text {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.45;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+/* Bottom Bar */
+.bottom-bar {
+  background-color: var(--navy-primary);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
+  padding: 1.25rem 1rem;
+  margin-top: 3rem;
+  border-top: 1px solid var(--navy-dark);
+}
+
+.bottom-bar-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  text-align: center;
+}
+
+.footer-wa {
+  color: #FFFFFF;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .header-card-content {
+    padding: 1.5rem 1.25rem;
+  }
+  .question-card {
+    padding: 1.25rem 1rem;
+  }
+  .main-title {
+    font-size: 1.45rem;
+  }
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+  .timeline-button-group {
+    grid-template-columns: 1fr;
+  }
+  .phone-input-group {
+    flex-direction: column;
+  }
+  .country-select {
+    width: 100%;
+  }
+  .top-nav-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+}
