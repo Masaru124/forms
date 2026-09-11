@@ -6,15 +6,24 @@ export default function App() {
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [countryCode, setCountryCode] = useState('+91');
-  const [location, setLocation] = useState('North Bengaluru (Airport & STRR Corridor)');
+  const [selectedLocations, setSelectedLocations] = useState(['North Bengaluru (Airport & STRR Corridor)']);
   const [customLocation, setCustomLocation] = useState('');
+
+  const toggleLocation = (loc) => {
+    setSelectedLocations((prev) => {
+      if (prev.includes(loc)) {
+        return prev.filter((item) => item !== loc);
+      } else {
+        return [...prev, loc];
+      }
+    });
+  };
   const [propertyType, setPropertyType] = useState('Residential Plot');
   const [plotSize, setPlotSize] = useState('30*40');
   const [customWidth, setCustomWidth] = useState('30');
   const [customLength, setCustomLength] = useState('40');
   const [budget, setBudget] = useState('₹35 Lakhs - ₹50 Lakhs');
   const [timeline, setTimeline] = useState('Within 30 Days (Ready)');
-  const [notes, setNotes] = useState('');
 
   const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -76,21 +85,28 @@ export default function App() {
     : plotSize === '40*60' ? '40 x 60 (2400 sq.ft)'
     : '50 x 60 (3000 sq.ft)';
 
-  const resolvedLocationStr = location === 'Other / Custom Locality' && customLocation.trim()
-    ? `${customLocation.trim()} (Bengaluru)`
-    : location;
+  const resolvedLocationsList = selectedLocations.map((loc) => {
+    if (loc === 'Other / Custom Locality') {
+      return customLocation.trim() ? `${customLocation.trim()} (Custom)` : 'Custom Locality';
+    }
+    return loc;
+  });
+
+  const resolvedLocationStr = resolvedLocationsList.length > 0
+    ? resolvedLocationsList.join(', ')
+    : 'None selected';
 
   const buildWhatsAppMessage = () => {
     return `*NEW PROPERTY INQUIRY VIA SMART FINDER*
 ━━━━━━━━━━━━━━━━━━━━
 • Full Name: ${fullName.trim()}
 • Contact / WhatsApp: ${countryCode} ${phone.trim()}
-• Preferred Location: ${resolvedLocationStr}
+• Preferred Locations: ${resolvedLocationStr}
 • Property Category: ${propertyType}
 • Plot Dimensions / Size: ${resolvedPlotSizeStr}
 • Estimated Budget: ${budget}
 • Purchase Readiness: ${timeline}
-${notes.trim() ? `• Notes: ${notes.trim()}\n` : ''}━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━
 • Request: Hello Premium Properties Advisory! I have completed the Smart Finder inquiry. Please send me verified RERA masterplans, available corner/standard plot layouts, and direct developer pricing for these specifications.`;
   };
 
@@ -124,7 +140,12 @@ ${notes.trim() ? `• Notes: ${notes.trim()}\n` : ''}━━━━━━━━━
       return;
     }
 
-    if (location === 'Other / Custom Locality' && !customLocation.trim()) {
+    if (selectedLocations.length === 0) {
+      setErrorMsg('Please select at least one preferred location.');
+      return;
+    }
+
+    if (selectedLocations.includes('Other / Custom Locality') && !customLocation.trim()) {
       setErrorMsg('Please specify your preferred custom locality name.');
       return;
     }
@@ -152,8 +173,8 @@ ${notes.trim() ? `• Notes: ${notes.trim()}\n` : ''}━━━━━━━━━
     setIsFormStarted(false);
     setFullName('');
     setPhone('');
+    setSelectedLocations(['North Bengaluru (Airport & STRR Corridor)']);
     setCustomLocation('');
-    setNotes('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -196,9 +217,6 @@ ${notes.trim() ? `• Notes: ${notes.trim()}\n` : ''}━━━━━━━━━
 
             <h1 className="main-title">Find Your Ideal Plot or Property in Bengaluru</h1>
 
-            <p className="subtitle">
-              Direct developer allocations, verified RERA layouts, and customized plots dispatched to your WhatsApp.
-            </p>
 
             {/* Trust Pills in Navy */}
             <div className="trust-pills">
@@ -324,43 +342,48 @@ ${notes.trim() ? `• Notes: ${notes.trim()}\n` : ''}━━━━━━━━━
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="84313 89153"
+                  placeholder="Enter 10-digit mobile number"
                   className="form-input phone-input"
                 />
               </div>
-              <div className="field-hint">
-                Inquiries routed to WhatsApp Helpline:{' '}
-                <strong className="gold-phone-number">{DISPLAY_PHONE}</strong>
-              </div>
             </div>
 
-            {/* Question 3: Preferred Location in Bengaluru */}
+            {/* Question 3: Preferred Location(s) in Bengaluru */}
             <div className="card question-card">
-              <label className="question-label">
-                3. Preferred Location in Bengaluru <span className="required-star">*</span>
-              </label>
+              <div className="question-header-row">
+                <label className="question-label">
+                  3. Preferred Location(s) in Bengaluru <span className="required-star">*</span>
+                </label>
+                {selectedLocations.length > 0 && (
+                  <span className="selection-count-badge">
+                    {selectedLocations.length} selected
+                  </span>
+                )}
+              </div>
               <p className="question-subtext">
-                Select your target investment growth corridor or enter a custom locality.
+                Select one or more target investment growth corridors or specify a custom locality.
               </p>
 
               <div className="options-list">
-                {locationOptions.map((loc) => (
-                  <label
-                    key={loc}
-                    className={`option-item radio-card ${location === loc ? 'selected' : ''}`}
-                  >
-                    <input
-                      type="radio"
-                      name="location"
-                      checked={location === loc}
-                      onChange={() => setLocation(loc)}
-                    />
-                    <span className="option-text">{loc}</span>
-                  </label>
-                ))}
+                {locationOptions.map((loc) => {
+                  const isChecked = selectedLocations.includes(loc);
+                  return (
+                    <label
+                      key={loc}
+                      className={`option-item checkbox-card ${isChecked ? 'selected' : ''}`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => toggleLocation(loc)}
+                      />
+                      <span className="option-text">{loc}</span>
+                    </label>
+                  );
+                })}
               </div>
 
-              {location === 'Other / Custom Locality' && (
+              {selectedLocations.includes('Other / Custom Locality') && (
                 <div className="custom-input-wrapper">
                   <input
                     type="text"
@@ -507,23 +530,6 @@ ${notes.trim() ? `• Notes: ${notes.trim()}\n` : ''}━━━━━━━━━
               </div>
             </div>
 
-            {/* Question 8: Specific Requirements or Notes (Optional) */}
-            <div className="card question-card">
-              <label htmlFor="notesInput" className="question-label">
-                8. Specific Requirements or Notes (Optional)
-              </label>
-              <p className="question-subtext">
-                Mention any specific preferences such as corner plot, park facing, Vastu, or bank loan requirements.
-              </p>
-              <textarea
-                id="notesInput"
-                rows={3}
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="E.g. Seeking East-facing corner plot near STRR or looking for SBI approved development..."
-                className="form-textarea"
-              />
-            </div>
 
             {/* Submit Card */}
             <div className="submit-action-card">
