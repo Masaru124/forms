@@ -6,8 +6,19 @@ export default function App() {
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [countryCode, setCountryCode] = useState('+91');
+  const [selectedPurposes, setSelectedPurposes] = useState(['🏠 Personal use']);
   const [selectedLocations, setSelectedLocations] = useState(['North Bengaluru (Airport & STRR Corridor)']);
   const [customLocation, setCustomLocation] = useState('');
+
+  const togglePurpose = (purpose) => {
+    setSelectedPurposes((prev) => {
+      if (prev.includes(purpose)) {
+        return prev.filter((item) => item !== purpose);
+      } else {
+        return [...prev, purpose];
+      }
+    });
+  };
 
   const toggleLocation = (loc) => {
     setSelectedLocations((prev) => {
@@ -36,6 +47,13 @@ export default function App() {
 
   const WHATSAPP_NUMBER = '918431909508';
   const DISPLAY_PHONE = '+91 84319 09508';
+
+  const purposeOptions = [
+    { id: 'personal', emoji: '🏠', title: 'Personal use', fullLabel: '🏠 Personal use', desc: 'Custom home or private villa' },
+    { id: 'investment', emoji: '📈', title: 'Investment', fullLabel: '📈 Investment', desc: 'High capital appreciation & ROI' },
+    { id: 'rental', emoji: '💰', title: 'Rental Income', fullLabel: '💰 Rental Income', desc: 'High-yield recurring cash flow' },
+    { id: 'family_asset', emoji: '🏡', title: 'Future Use / Family Asset', fullLabel: '🏡 Future Use / Family Asset', desc: 'Generational wealth & security' }
+  ];
 
   const locationOptions = [
     'North Bengaluru (Airport & STRR Corridor)',
@@ -96,11 +114,16 @@ export default function App() {
     ? resolvedLocationsList.join(', ')
     : 'None selected';
 
+  const resolvedPurposeStr = selectedPurposes.length > 0
+    ? selectedPurposes.join(', ')
+    : 'None selected';
+
   const buildWhatsAppMessage = () => {
     return `*NEW PROPERTY INQUIRY VIA SMART FINDER*
 ━━━━━━━━━━━━━━━━━━━━
 • Full Name: ${fullName.trim()}
 • Contact / WhatsApp: ${countryCode} ${phone.trim()}
+• Purpose of Purchase: ${resolvedPurposeStr}
 • Preferred Locations: ${resolvedLocationStr}
 • Property Category: ${propertyType}
 • Plot Dimensions / Size: ${resolvedPlotSizeStr}
@@ -140,6 +163,11 @@ export default function App() {
       return;
     }
 
+    if (selectedPurposes.length === 0) {
+      setErrorMsg('Please select at least one Purpose of Purchase.');
+      return;
+    }
+
     if (selectedLocations.length === 0) {
       setErrorMsg('Please select at least one preferred location.');
       return;
@@ -173,6 +201,7 @@ export default function App() {
     setIsFormStarted(false);
     setFullName('');
     setPhone('');
+    setSelectedPurposes(['🏠 Personal use']);
     setSelectedLocations(['North Bengaluru (Airport & STRR Corridor)']);
     setCustomLocation('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -348,11 +377,53 @@ export default function App() {
               </div>
             </div>
 
-            {/* Question 3: Preferred Location(s) in Bengaluru */}
+            {/* Question 3: Purpose of Purchase */}
             <div className="card question-card">
               <div className="question-header-row">
                 <label className="question-label">
-                  3. Preferred Location(s) in Bengaluru <span className="required-star">*</span>
+                  3. Purpose of Purchase <span className="required-star">*</span>
+                </label>
+                {selectedPurposes.length > 0 && (
+                  <span className="selection-count-badge">
+                    {selectedPurposes.length} selected
+                  </span>
+                )}
+              </div>
+              <p className="question-subtext">
+                Select one or more intended goals for this property acquisition.
+              </p>
+
+              <div className="purpose-grid">
+                {purposeOptions.map((item) => {
+                  const isChecked = selectedPurposes.includes(item.fullLabel);
+                  return (
+                    <label
+                      key={item.id}
+                      className={`purpose-card-option ${isChecked ? 'selected' : ''}`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => togglePurpose(item.fullLabel)}
+                      />
+                      <div className="purpose-card-content">
+                        <div className="purpose-title-row">
+                          <span className="purpose-icon">{item.emoji}</span>
+                          <span className="purpose-title">{item.title}</span>
+                        </div>
+                        <span className="purpose-desc">{item.desc}</span>
+                      </div>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Question 4: Preferred Location(s) in Bengaluru */}
+            <div className="card question-card">
+              <div className="question-header-row">
+                <label className="question-label">
+                  4. Preferred Location(s) in Bengaluru <span className="required-star">*</span>
                 </label>
                 {selectedLocations.length > 0 && (
                   <span className="selection-count-badge">
@@ -396,10 +467,10 @@ export default function App() {
               )}
             </div>
 
-            {/* Question 4: Type of Property */}
+            {/* Question 5: Type of Property */}
             <div className="card question-card">
               <label className="question-label">
-                4. Type of Property <span className="required-star">*</span>
+                5. Type of Property <span className="required-star">*</span>
               </label>
               <p className="question-subtext">Choose your desired property development class.</p>
 
@@ -424,10 +495,10 @@ export default function App() {
               </div>
             </div>
 
-            {/* Question 5: Plot Dimensions / Size */}
+            {/* Question 6: Plot Dimensions / Size */}
             <div className="card question-card">
               <label className="question-label">
-                5. Plot Dimensions / Size <span className="required-star">*</span>
+                6. Plot Dimensions / Size <span className="required-star">*</span>
               </label>
               <p className="question-subtext">
                 Standard Bengaluru plot footprints or bespoke dimensions.
@@ -481,10 +552,10 @@ export default function App() {
               )}
             </div>
 
-            {/* Question 6: Estimated Budget */}
+            {/* Question 7: Estimated Budget */}
             <div className="card question-card">
               <label className="question-label">
-                6. Estimated Budget <span className="required-star">*</span>
+                7. Estimated Budget <span className="required-star">*</span>
               </label>
               <p className="question-subtext">Choose your planned investment allocation range.</p>
 
@@ -508,10 +579,10 @@ export default function App() {
               </div>
             </div>
 
-            {/* Question 7: Purchase Readiness / Timeline */}
+            {/* Question 8: Purchase Readiness / Timeline */}
             <div className="card question-card">
               <label className="question-label">
-                7. Purchase Readiness / Timeline
+                8. Purchase Readiness / Timeline
               </label>
               <p className="question-subtext">When are you planning to finalize your site visit and booking?</p>
 
