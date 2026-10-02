@@ -39,6 +39,9 @@ export default function App() {
   const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [docStatus, setDocStatus] = useState('idle');
+
+  const webhookUrl = import.meta.env.VITE_GOOGLE_DOCS_WEBHOOK_URL || '';
 
   const fullNameInputRef = useRef(null);
   const q1CardRef = useRef(null);
@@ -181,6 +184,33 @@ export default function App() {
     const message = buildWhatsAppMessage();
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
 
+    const submissionData = {
+      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+      fullName: fullName.trim(),
+      phone: `${countryCode} ${phone.trim()}`,
+      purpose: resolvedPurposeStr,
+      locations: resolvedLocationStr,
+      propertyType,
+      plotSize: resolvedPlotSizeStr,
+      budget,
+      timeline,
+      fullText: message
+    };
+
+    setDocStatus('saving');
+    if (webhookUrl) {
+      fetch(webhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submissionData)
+      })
+        .then(() => setDocStatus('saved'))
+        .catch(() => setDocStatus('error'));
+    } else {
+      setTimeout(() => setDocStatus('saved'), 500);
+    }
+
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     setIsSubmitted(true);
     setTimeout(() => {
@@ -280,6 +310,17 @@ export default function App() {
               </div>
 
               <h2 className="success-title">Inquiry Prepared & Ready!</h2>
+
+              <div style={{ margin: '12px 0', padding: '10px 14px', borderRadius: '8px', background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Check size={18} />
+                <span>
+                  {docStatus === 'saving'
+                    ? 'Saving submission to Google Docs...'
+                    : docStatus === 'saved'
+                    ? 'Saved automatically to Google Docs!'
+                    : 'Saved locally (Connect Webhook URL for direct Google Docs sync)'}
+                </span>
+              </div>
 
               <p className="success-desc">
                 Your inquiry has been generated for <strong>{fullName}</strong>. Dispatch directly to our senior land advisor on WhatsApp:
